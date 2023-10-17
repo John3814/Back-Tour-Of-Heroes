@@ -61,15 +61,15 @@
     </dependency>
 
     <dependency>
-      <groupId>io.springfox</groupId>
+      <groupId>org.thingsboard</groupId>
       <artifactId>springfox-swagger2</artifactId>
-      <version>${springfox-swagger2.version}</version>
+      <version>3.0.4</version>
     </dependency>
 
     <dependency>
-      <groupId>io.springfox</groupId>
-      <artifactId>springfox-swagger-ui</artifactId>
-      <version>${springfox-swagger-ui.version}</version>
+      <groupId>com.smarthito</groupId>
+      <artifactId>swagger-ui</artifactId>
+      <version>3.1</version>
     </dependency>
 
   </dependencies>
@@ -123,8 +123,8 @@
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-compiler-plugin</artifactId>
         <configuration>
-          <source>8</source>
-          <target>8</target>
+          <source>15</source>
+          <target>15</target>
         </configuration>
       </plugin>
     </plugins>
