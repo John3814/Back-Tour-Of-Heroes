@@ -54,4 +54,8 @@ public class HeroService {
     public Hero addHero(Hero hero) {
         return this.heroRepository.save(hero);
     }
+
+    public void deleteHero(Integer id) {
+        this.heroRepository.deleteById(id);
+    }
 }

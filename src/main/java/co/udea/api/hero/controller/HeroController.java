@@ -39,11 +39,22 @@ public class HeroController {
     }
 
     @GetMapping
+    @ApiOperation(value = "Obtener todos los héroes", response = Hero.class, responseContainer = "List")
+    @ApiResponses(value = {
+            @ApiResponse(code = 200, message = "Lista de héroes recuperada exitosamente"),
+            @ApiResponse(code = 500, message = "Error interno al procesar la respuesta")
+    })
     public ResponseEntity<List<Hero>> getHeroes(){
         return ResponseEntity.ok().body(this.heroService.getHeroes());
     }
 
     @GetMapping("/")
+    @ApiOperation(value = "Buscar héroes por nombre", response = Hero.class, responseContainer = "List")
+    @ApiResponses(value = {
+            @ApiResponse(code = 200, message = "Lista de héroes encontrada exitosamente"),
+            @ApiResponse(code = 400, message = "Solicitud inválida"),
+            @ApiResponse(code = 500, message = "Error interno al procesar la respuesta")
+    })
     public ResponseEntity<List<Hero>> searchHeroes(@RequestParam("name") String term){
         log.info("Rest request buscar heroe por term: " + term);
         return ResponseEntity.ok().body(this.heroService.searchHeroes(term));
@@ -51,14 +62,38 @@ public class HeroController {
 
     @PutMapping
     @Transactional
+    @ApiOperation(value = "Actualizar un héroe", response = Hero.class)
+    @ApiResponses(value = {
+            @ApiResponse(code = 200, message = "Héroe actualizado exitosamente"),
+            @ApiResponse(code = 400, message = "Solicitud inválida"),
+            @ApiResponse(code = 500, message = "Error interno al procesar la respuesta")
+    })
     public ResponseEntity<Hero> updateHero(@RequestBody Hero hero){
         return ResponseEntity.ok().body(this.heroService.updateHero(hero));
     }
 
     @PostMapping
+    @ApiOperation(value = "Agregar un nuevo héroe", response = Hero.class)
+    @ApiResponses(value = {
+            @ApiResponse(code = 201, message = "Héroe creado exitosamente"),
+            @ApiResponse(code = 400, message = "Solicitud inválida"),
+            @ApiResponse(code = 500, message = "Error interno al procesar la respuesta")
+    })
     public ResponseEntity<Hero> addHero(@RequestBody Hero hero, UriComponentsBuilder uriComponentsBuilder){
         Hero hero1 = this.heroService.addHero(hero);
         URI url = uriComponentsBuilder.path("/medicos/{id}").buildAndExpand(hero1.getId()).toUri();
         return ResponseEntity.created(url).body(hero1);
+    }
+
+    @DeleteMapping("/{id}")
+    @ApiOperation(value = "Eliminar un héroe por ID")
+    @ApiResponses(value = {
+            @ApiResponse(code = 204, message = "Héroe eliminado exitosamente"),
+            @ApiResponse(code = 404, message = "Héroe no encontrado"),
+            @ApiResponse(code = 500, message = "Error interno al procesar la solicitud")
+    })
+    public ResponseEntity deleteHero(@PathVariable Integer id){
+        this.heroService.deleteHero(id);
+        return  ResponseEntity.noContent().build();
     }
 }
